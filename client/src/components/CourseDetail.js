@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import ReactMarkdown from "react-markdown";
 
 
-function CourseDetail({context}) {
+function CourseDetail({context},) {
 
     const [course, addCourse] = useState([]);
     const { id } = useParams();
 
     const authUser = context.authenticatedUser;
-    let user;
     
-
-
     useEffect(() => {
         context.data.getCourseById(id)
         .then((data) => addCourse(data))
@@ -21,14 +18,19 @@ function CourseDetail({context}) {
         });
     }, []);
 
+    function handleUpdate(event) {
+        event.preventDefault();
+        <Redirect to={`/courses/${id}/update`} />
+      }
+
     return (
         <main>
             <div className="actions--bar">
                 
                 {authUser ?
                     <div className="wrap">
-                        <a className="button" href="update">Update Course</a>
-                        <a className="button" href="delete">Delete Course</a>
+                        <a className="button" href={`/courses/${id}/update`}>Update Course</a>
+                        <a className="button" href={`/courses/${id}/delete`}>Delete Course</a>
                         <a className="button button-secondary" href="/">Return to List</a>
                         </div>
                     :

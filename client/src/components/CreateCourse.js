@@ -115,7 +115,6 @@ submit = () => {
             if (errors.length) {
               this.setState({ errors });
             }  else {
-            console.log('hello');
             this.props.history.push(`/`);
             }
         })
