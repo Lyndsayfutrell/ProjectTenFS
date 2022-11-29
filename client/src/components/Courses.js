@@ -32,8 +32,6 @@ class Courses extends Component {
     } = this.state;
 
 
-
-
   let courseList;
   if (courses.length > 0) {
     courseList = courses.map((course) => (

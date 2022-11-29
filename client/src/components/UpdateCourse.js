@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import Form from './Form';
 
 class CreateCourse extends Component {
@@ -8,6 +8,7 @@ class CreateCourse extends Component {
         description: '',
         estimatedTime: '',
         materialsNeeded: '',
+        authorId: '',
         errors: [],
       }
 
@@ -19,6 +20,7 @@ class CreateCourse extends Component {
             this.setState({ description: data.description })
             this.setState({ estimatedTime: data.estimatedTime })
             this.setState({ materialsNeeded: data.materialsNeeded })
+            this.setState({ authorId: data.userId })
         })
         .catch((err) => {
             console.log(err);
@@ -31,13 +33,18 @@ class CreateCourse extends Component {
           description,
           estimatedTime,
           materialsNeeded,
+          authorId,
           errors,
         } = this.state;
         
     
     return (
         <main>
-            <div className="wrap">
+        { this.props.context.authenticatedUser[ "User ID" ] !== authorId
+            ? <Redirect to={{
+                  pathname: '/forbidden',
+                }} />
+            :<div className="wrap">
                 <h2>Update</h2>
                 <Form 
                 cancel={this.cancel}
@@ -92,6 +99,7 @@ class CreateCourse extends Component {
                     </React.Fragment>
             )} />
             </div>
+        }
         </main>
     );
 }

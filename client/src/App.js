@@ -11,7 +11,10 @@ import UserSignOut from './components/UserSignOut';
 import PrivateRoute from './PrivateRoute';
 import CourseDetail from "./components/CourseDetail";
 import CreateCourse from "./components/CreateCourse";
-import UpdateCourse from "./components/UpdateCourse"
+import UpdateCourse from "./components/UpdateCourse";
+import Error from "./components/Error";
+import Forbidden from "./components/Forbidden";
+
 
 const HeaderWithContext = withContext(Header);
 const CoursesWithContext = withContext(Courses);
@@ -38,6 +41,8 @@ export default class App extends Component {
           <PrivateRouteWithContext path="/createcourse" component={CreateCourseWithContext} />
           <Route exact path='/courses/:id' component={CourseDetailWithContext} />
           <PrivateRouteWithContext path="/courses/:id/update" component={UpdateCourseWithContext} />
+          <Route path="/error" component={Error} />
+          <Route path="/forbidden" component={Forbidden} />
           <Route path="*" component={NotFound} />
         </Switch>
       </div>

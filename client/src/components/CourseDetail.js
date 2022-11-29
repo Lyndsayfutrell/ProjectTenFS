@@ -44,7 +44,10 @@ class CourseDetail extends Component {
               errors,
             } = this.state;
 
-        const authUserId = this.props.context.authenticatedUser[ "User ID" ];
+        let authUserId;
+        if(this.props.authenticatedUser){
+            authUserId = this.props.context.authenticatedUser[ "User ID" ];
+        }
         const id = this.props.match.params.id;    
 
 
@@ -52,16 +55,16 @@ class CourseDetail extends Component {
         <main>
             <div className="actions--bar">
                 
-                {authUserId === userId ?
+                {authUserId === null || authUserId !== userId ?
                     <div className="wrap">
+                        <a className="button button-secondary" href="/">Return to List</a>
+                    </div>
+                    :<div className="wrap">
                         <a className="button" href={`/courses/${id}/update`}>Update Course</a>
                         <button className="button" onClick={this.handleDelete}>Delete Course</button>
                         <a className="button button-secondary" href="/">Return to List</a>
-                        </div>
-                    :
-                    <div className="wrap">
-                    <a className="button button-secondary" href="/">Return to List</a>
                     </div>
+
                 }
             </div>
             {(title.length !== 0)
