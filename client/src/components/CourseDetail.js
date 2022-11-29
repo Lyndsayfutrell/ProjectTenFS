@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import ReactMarkdown from "react-markdown";
 
 
@@ -90,7 +90,9 @@ class CourseDetail extends Component {
                     </div>
                 </form>
             </div>
-            : <p>Nothing to display</p>
+            : <Redirect to={{
+                  pathname: '/notfound',
+                }} />
             }
         </main>
     );
