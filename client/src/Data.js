@@ -1,4 +1,3 @@
-import DeleteCourse from './components/DeleteCourse';
 import config from './config';
 
 export default class Data {
@@ -95,6 +94,15 @@ export default class Data {
             }
     
         }
+
+        async updateCourse(username, password, body, id) {
+            const response = await this.api(`/courses/${id}`, 'PUT', body, true, { username, password });
+            if (response.status === 204) {
+                return [];
+            } else {
+                    throw new Error();
+                } 
+            }
     
     
     }

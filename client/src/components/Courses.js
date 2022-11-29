@@ -1,16 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 
-const Courses = ({ context }) => {
-  let [courses, addCourses] = useState([]);
+class Courses extends Component {
 
-  useEffect(() => {
-    context.data.getCourses()
-      .then((data) => addCourses(data))
+  state = {
+    courses: '',
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.courses.length !== prevState.courses.length) {
+      this.props.context.data.getCourses()
+      .then((data) => this.setState({ courses: data }))
+      .then(prevState.courses = this.state.courses)
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  
+    }
+  }
+
+  componentDidMount() {
+    this.props.context.data.getCourses()
+    .then((data) => this.setState({ courses: data }))
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  render() {
+    const {
+    courses
+    } = this.state;
+
+
+
+
   let courseList;
   if (courses.length > 0) {
     courseList = courses.map((course) => (
@@ -24,6 +47,7 @@ const Courses = ({ context }) => {
       </a>
     ));
   }
+
   return (
     <main>
       {courseList === 0 ? (
@@ -68,5 +92,6 @@ const Courses = ({ context }) => {
     </main>
   );
 };
+}
 
-export default Courses;
+export default withRouter(Courses);

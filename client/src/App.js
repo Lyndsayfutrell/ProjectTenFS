@@ -11,7 +11,6 @@ import UserSignOut from './components/UserSignOut';
 import PrivateRoute from './PrivateRoute';
 import CourseDetail from "./components/CourseDetail";
 import CreateCourse from "./components/CreateCourse";
-import DeleteCourse from "./components/DeleteCourse";
 import UpdateCourse from "./components/UpdateCourse"
 
 const HeaderWithContext = withContext(Header);
@@ -22,7 +21,6 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignOutWithContext = withContext(UserSignOut);
 const PrivateRouteWithContext = withContext(PrivateRoute);
 const CreateCourseWithContext = withContext(CreateCourse);
-const DeleteCourseWithContext = withContext(DeleteCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
 
 export default class App extends Component {
@@ -39,7 +37,6 @@ export default class App extends Component {
           <PrivateRouteWithContext path="/signout" component={UserSignOutWithContext} />
           <PrivateRouteWithContext path="/createcourse" component={CreateCourseWithContext} />
           <Route exact path='/courses/:id' component={CourseDetailWithContext} />
-          <Route path="/courses/:id/delete" component={DeleteCourseWithContext} />
           <PrivateRouteWithContext path="/courses/:id/update" component={UpdateCourseWithContext} />
           <Route path="*" component={NotFound} />
         </Switch>

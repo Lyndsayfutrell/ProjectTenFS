@@ -1,36 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 import ReactMarkdown from "react-markdown";
 
 
-function CourseDetail({context},) {
+class CourseDetail extends Component {
 
-    const [course, addCourse] = useState([]);
-    const { id } = useParams();
+    state = {
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+        UserId: '',
+        fullName: '',
+        errors: [],
+      }
 
-    const authUser = context.authenticatedUser;
-    
-    useEffect(() => {
-        context.data.getCourseById(id)
-        .then((data) => addCourse(data))
+
+    componentDidMount() {
+        const id = this.props.match.params.id;
+        this.props.context.data.getCourseById(id)
+        .then((data) => {
+            this.setState({ title: data.title })
+            this.setState({ description: data.description })
+            this.setState({ estimatedTime: data.estimatedTime })
+            this.setState({ materialsNeeded: data.materialsNeeded })
+            this.setState({ userId: data.userId })
+            this.setState({ fullName: data.owner.firstName + ' ' + data.owner.lastName })
+        })
         .catch((err) => {
             console.log(err);
         });
-    }, []);
+    }
 
-    function handleUpdate(event) {
-        event.preventDefault();
-        <Redirect to={`/courses/${id}/update`} />
-      }
+
+        render() {
+            const {
+              title,
+              description,
+              estimatedTime,
+              materialsNeeded,
+              fullName,
+              userId,
+              errors,
+            } = this.state;
+
+        const authUserId = this.props.context.authenticatedUser[ "User ID" ];
+        const id = this.props.match.params.id;    
+
 
     return (
         <main>
             <div className="actions--bar">
                 
-                {authUser ?
+                {authUserId === userId ?
                     <div className="wrap">
                         <a className="button" href={`/courses/${id}/update`}>Update Course</a>
-                        <a className="button" href={`/courses/${id}/delete`}>Delete Course</a>
+                        <button className="button" onClick={this.handleDelete}>Delete Course</button>
                         <a className="button button-secondary" href="/">Return to List</a>
                         </div>
                     :
@@ -39,24 +64,24 @@ function CourseDetail({context},) {
                     </div>
                 }
             </div>
-            {(course.length !== 0)
+            {(title.length !== 0)
             ? <div className="wrap">
                 <h2>Course Detail</h2>
                 <form>
                     <div className="main--flex">
                         <div>
                             <h3 className="course--detail--title">Course</h3>
-                            <h4 className="course--name">{course.title}</h4>
-                            <p>By {course.owner.firstName} {course.owner.lastName}</p>
-                            <ReactMarkdown children={course.description} />
+                            <h4 className="course--name">{title}</h4>
+                            <p>By {fullName}</p>
+                            <ReactMarkdown children={description} />
                         </div>
                         <div>
                             <h3 className="course--detail--title">Estimated Time</h3>
-                            <p>{course.estimatedTime}</p>
+                            <p>{estimatedTime}</p>
 
                             <h3 className="course--detail--title">Materials Needed</h3>
                             <ul className="course--detail--list">
-                                <ReactMarkdown children={course.materialsNeeded} />
+                                <ReactMarkdown children={materialsNeeded} />
                             </ul>
                         </div>
                     </div>
@@ -68,4 +93,20 @@ function CourseDetail({context},) {
     );
 }
 
-export default CourseDetail;
+    handleDelete= (event) => {
+        const { password } = this.props.context;
+        const username = this.props.context.authenticatedUser.Username;
+        const id = this.props.match.params.id;
+        event.preventDefault();
+        this.props.context.data.deleteCourse(username, password, id)
+        .then(
+            this.props.history.push('/')
+        )
+        .catch( err => {
+        console.log(err);
+        })}
+
+
+}
+
+export default withRouter(CourseDetail);
