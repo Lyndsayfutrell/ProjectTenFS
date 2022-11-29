@@ -3,10 +3,15 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from "react-markdown";
 
 
-function Course({context}) {
+function CourseDetail({context}) {
+
     const [course, addCourse] = useState([]);
     const { id } = useParams();
+
+    const authUser = context.authenticatedUser;
+    let user;
     
+
 
     useEffect(() => {
         context.data.getCourseById(id)
@@ -16,19 +21,23 @@ function Course({context}) {
         });
     }, []);
 
-   console.log(course)
-
-
     return (
         <main>
             <div className="actions--bar">
-                <div className="wrap">
-                    <a className="button" href="update-course.html">Update Course</a>
-                    <a className="button" href="#">Delete Course</a>
+                
+                {authUser ?
+                    <div className="wrap">
+                        <a className="button" href="update">Update Course</a>
+                        <a className="button" href="delete">Delete Course</a>
+                        <a className="button button-secondary" href="/">Return to List</a>
+                        </div>
+                    :
+                    <div className="wrap">
                     <a className="button button-secondary" href="/">Return to List</a>
-                </div>
+                    </div>
+                }
             </div>
-            {(course !== null)
+            {(course.length !== 0)
             ? <div className="wrap">
                 <h2>Course Detail</h2>
                 <form>
@@ -36,7 +45,7 @@ function Course({context}) {
                         <div>
                             <h3 className="course--detail--title">Course</h3>
                             <h4 className="course--name">{course.title}</h4>
-                            <p>By</p>
+                            <p>By {course.owner.firstName} {course.owner.lastName}</p>
                             <ReactMarkdown children={course.description} />
                         </div>
                         <div>
@@ -57,4 +66,4 @@ function Course({context}) {
     );
 }
 
-export default Course;
+export default CourseDetail;

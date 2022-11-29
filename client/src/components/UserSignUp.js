@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Form from './Form';
 
-export default class UserSignUp extends Component {
+class UserSignUp extends Component {
+  
     state = {
       firstName: '',
       lastName: '',
-      username: '',
+      emailAddress: '',
       password: '',
       errors: [],
     }
@@ -15,7 +16,7 @@ export default class UserSignUp extends Component {
       const {
         firstName,
         lastName,
-        username,
+        emailAddress,
         password,
         errors,
       } = this.state;
@@ -30,7 +31,7 @@ export default class UserSignUp extends Component {
               submitButtonText="Sign Up"
               elements={() => (
                 <React.Fragment>
-                  <label for="firstName">First Name</label>
+                  <label htmlFor="firstName">First Name</label>
                   <input 
                     id="firstName" 
                     name="firstName" 
@@ -38,7 +39,7 @@ export default class UserSignUp extends Component {
                     value={firstName} 
                     onChange={this.change} 
                     placeholder="First Name" />
-                  <label for="lastName">Last Name</label>
+                  <label htmlFor="lastName">Last Name</label>
                   <input 
                     id="lastName" 
                     name="lastName" 
@@ -46,15 +47,15 @@ export default class UserSignUp extends Component {
                     value={lastName} 
                     onChange={this.change} 
                     placeholder="Last Name" />
-                  <label for="emailAddress">Email Address</label>
+                  <label htmlFor="emailAddress">Email Address</label>
                   <input 
                     id="emailAddress" 
                     name="emailAddress" 
                     type="email"
-                    value={username} 
+                    value={emailAddress} 
                     onChange={this.change} 
                     placeholder="Email Address" />
-                  <label for="password">Password</label>
+                  <label htmlFor="password">Password</label>
                   <input 
                     id="password" 
                     name="password"
@@ -72,12 +73,12 @@ export default class UserSignUp extends Component {
     }
   
     change = (event) => {
-      const firstName = event.target.firstName;
+      const name = event.target.name;
       const value = event.target.value;
   
       this.setState(() => {
         return {
-          [firstName]: value
+          [name]: value
         };
       });
     }
@@ -88,25 +89,24 @@ export default class UserSignUp extends Component {
       const {
         firstName,
         lastName,
-        username,
+        emailAddress,
         password,
       } = this.state; 
   
       const user = {
         firstName,
         lastName,
-        username,
+        emailAddress,
         password,
       };
-  
       context.data.createUser(user)
       .then( errors => {
         if (errors.length) {
           this.setState({ errors });
         } else {
-          context.actions.signIn(username, password)
+          context.actions.signIn(emailAddress, password)
           .then(() => {
-            this.props.history.push('/authenticated');    
+            this.props.history.push('/'); 
           });
         }
       })
@@ -120,3 +120,5 @@ export default class UserSignUp extends Component {
       this.props.history.push('/');
     }
   }
+
+  export default withRouter(UserSignUp);

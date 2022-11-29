@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./styles/global.css";
 import withContext from "./Context";
 import Header from "./components/Header";
@@ -9,15 +9,17 @@ import UserSignUp from './components/UserSignUp';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import PrivateRoute from './PrivateRoute';
-import Course from './components/Course'
+import CourseDetail from "./components/CourseDetail";
+import CreateCourse from "./components/CreateCourse";
 
 const HeaderWithContext = withContext(Header);
 const CoursesWithContext = withContext(Courses);
-const CourseWithContext = withContext(Course);
+const CourseDetailWithContext = withContext(CourseDetail);
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignOutWithContext = withContext(UserSignOut);
 const PrivateRouteWithContext = withContext(PrivateRoute);
+const CreateCourseWithContext = withContext(CreateCourse);
 
 export default class App extends Component {
   render() {
@@ -25,20 +27,16 @@ export default class App extends Component {
     <Router>
       <div>
         <HeaderWithContext />
-        <Routes>
-          <Route exact path="/" element={<CoursesWithContext />} />
+        <Switch>
+          <Route exact path="/" component={CoursesWithContext} />
           {/* <PrivateRoute path="/settings" element={<Course />} /> */}
-          <Route path="/signin" element={<UserSignInWithContext />} />
-          <Route path="/signup" element={<UserSignUpWithContext />} />
-          <Route path="/signout" element={
-            <PrivateRouteWithContext>
-              <UserSignOutWithContext />
-            </PrivateRouteWithContext>
-          }
-          />
-          <Route path='/courses/:id' element={<CourseWithContext />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+          <Route path="/signin" component={UserSignInWithContext} />
+          <Route path="/signup" component={UserSignUpWithContext} />
+          <PrivateRouteWithContext path="/signout" component={UserSignOutWithContext} />
+          <PrivateRouteWithContext path="/createcourse" component={CreateCourseWithContext} />
+          <Route path='/courses/:id' component={CourseDetailWithContext} />
+          <Route path="*" component={NotFound} />
+        </Switch>
       </div>
     </Router>
   

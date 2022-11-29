@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Form from './Form';
 
-export default class UserSignIn extends Component {
+class UserSignIn extends Component {
+
   state = {
     username: '',
     password: '',
@@ -76,11 +77,13 @@ export default class UserSignIn extends Component {
     })
     .catch( err => {
       console.log(err);
-      this.props.history.push('/error');
+      this.props.history.push('/error')
     })
   }
 
   cancel = () => {
-    this.props.history.push('/');
+   this.props.history.push('/')
   }
 }
+
+export default withRouter(UserSignIn);

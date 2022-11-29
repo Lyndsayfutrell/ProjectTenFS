@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 
 const Courses = ({ context }) => {
-    let [courses, addCourses] = useState([]);
-    
+  let [courses, addCourses] = useState([]);
 
-    useEffect(() => {
-        context.data.getCourses()
-        .then((data) => addCourses(data))
-        .catch((err) => {
-            console.log(err);
-        });
-    }, []);
+  useEffect(() => {
+    context.data.getCourses()
+      .then((data) => addCourses(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  
   let courseList;
   if (courses.length > 0) {
-    courseList = courses.map((course) => 
-    (
-      <a className="course--module course--link" href={`/courses/${course.id}`} key={course.id}>
+    courseList = courses.map((course) => (
+      <a
+        className="course--module course--link"
+        href={`/courses/${course.id}`}
+        key={course.id}
+      >
         <h2 className="course--label">Course</h2>
         <h3 className="course--title">{course.title}</h3>
       </a>
@@ -23,10 +26,45 @@ const Courses = ({ context }) => {
   }
   return (
     <main>
-    {(courseList === 0)
-    ? <p>No Courses to display</p>
-    : <div className="wrap main--grid">{courseList}</div>
-    }
+      {courseList === 0 ? (
+        <div className="wrap main--grid">
+          <p>No Courses to display</p>
+          <a className="course--module course--add--module" href="/createcourse">
+            <span className="course--add--title">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 13 13"
+                className="add"
+              >
+                <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon>
+              </svg>
+              New Course
+            </span>
+          </a>
+        </div>
+      ) : (
+        <div className="wrap main--grid">
+          {courseList}
+          <a className="course--module course--add--module" href="/createcourse">
+            <span className="course--add--title">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 13 13"
+                className="add"
+              >
+                <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon>
+              </svg>
+              New Course
+            </span>
+          </a>
+        </div>
+      )}
     </main>
   );
 };
