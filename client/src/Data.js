@@ -111,6 +111,10 @@ export default class Data {
             const response = await this.api(`/courses/${id}`, 'PUT', body, true, { username, password });
             if (response.status === 204) {
                 return [];
+            }else if (response.status === 400) {
+                    return response.json().then(data => {
+                      return data.errors;
+                    });
             } else {
                     throw new Error();
                 } 

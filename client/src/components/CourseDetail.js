@@ -29,10 +29,10 @@ class CourseDetail extends Component {
             this.setState({ materialsNeeded: data.materialsNeeded })
             this.setState({ userId: data.userId })
             this.setState({ fullName: data.owner.firstName + ' ' + data.owner.lastName })
-            this.setState({ didMount: true })
             if(this.props.context.authenticatedUser){
                 this.setState({ authUserId: this.props.context.authenticatedUser[ "User ID" ] })
             }
+            this.setState({ didMount: true })
         })
         .catch((err) => {
             this.setState({ didMount: true })

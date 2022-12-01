@@ -9,6 +9,8 @@ class CreateCourse extends Component {
         estimatedTime: '',
         materialsNeeded: '',
         authorId: '',
+        didMount: '',
+        authUserId: '',
         errors: [],
       }
 
@@ -22,8 +24,11 @@ class CreateCourse extends Component {
             this.setState({ estimatedTime: data.estimatedTime })
             this.setState({ materialsNeeded: data.materialsNeeded })
             this.setState({ authorId: data.userId })
+            this.setState({ authUserId: this.props.context.authenticatedUser[ "User ID" ] })
+            this.setState({ didMount: true })
         })
         .catch((err) => {
+          this.setState({ didMount: true })
             console.log(err);
         });
     }
@@ -35,14 +40,20 @@ class CreateCourse extends Component {
           estimatedTime,
           materialsNeeded,
           authorId,
+          authUserId,
+          didMount,
           errors,
         } = this.state;
-        
-    
+
+console.log(authUserId);
+
+
+// if mount function is complete either failed or success, page will return            
+if (didMount === true) {
     return (
         <main>
         { //checks if author is logged in user, if not reroutes to forbidden
-          this.props.context.authenticatedUser[ "User ID" ] !== authorId
+          authUserId !== authorId
             ? <Redirect to={{
                   pathname: '/forbidden',
                 }} />
@@ -104,7 +115,7 @@ class CreateCourse extends Component {
         }
         </main>
     );
-}
+}}
 
 
 //updates values on change
