@@ -5,14 +5,14 @@ import Form from './Form';
 class UserSignIn extends Component {
 
   state = {
-    username: '',
+    emailAddress: '',
     password: '',
     errors: [],
   }
 
   render() {
     const {
-      username,
+      emailAddress,
       password,
       errors,
     } = this.state;
@@ -27,13 +27,15 @@ class UserSignIn extends Component {
             submitButtonText="Sign In"
             elements={() => (
               <React.Fragment>
+              <label for="emailAddress">Email Address</label>
                 <input 
-                  id="username" 
-                  name="username" 
+                  id="emailAddress" 
+                  name="emailAddress" 
                   type="text"
-                  value={username} 
+                  value={emailAddress} 
                   onChange={this.change} 
                   placeholder="User Name" />
+                  <label for="password">Password</label>
                 <input 
                   id="password" 
                   name="password"
@@ -50,6 +52,8 @@ class UserSignIn extends Component {
     );
   }
 
+
+  //handles change and updates value field
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -61,11 +65,13 @@ class UserSignIn extends Component {
     });
   }
 
+  //handles submit
+
   submit = () => {
     const { context } = this.props;
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const { username, password } = this.state;
-    context.actions.signIn(username, password)
+    const { emailAddress, password } = this.state;
+    context.actions.signIn(emailAddress, password)
     .then( user => {
       if (user === null) {
         this.setState(() => {
@@ -81,6 +87,8 @@ class UserSignIn extends Component {
     })
   }
 
+
+  //handles cancel and takes to home page
   cancel = () => {
    this.props.history.push('/')
   }

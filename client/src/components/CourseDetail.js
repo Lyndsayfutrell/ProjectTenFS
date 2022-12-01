@@ -12,10 +12,13 @@ class CourseDetail extends Component {
         materialsNeeded: '',
         UserId: '',
         fullName: '',
+        authUserId: '',
+        didMount: '',
         errors: [],
       }
 
 
+      //runs api call and sets state on mount
     componentDidMount() {
         const id = this.props.match.params.id;
         this.props.context.data.getCourseById(id)
@@ -26,8 +29,13 @@ class CourseDetail extends Component {
             this.setState({ materialsNeeded: data.materialsNeeded })
             this.setState({ userId: data.userId })
             this.setState({ fullName: data.owner.firstName + ' ' + data.owner.lastName })
+            this.setState({ didMount: true })
+            if(this.props.context.authenticatedUser){
+                this.setState({ authUserId: this.props.context.authenticatedUser[ "User ID" ] })
+            }
         })
         .catch((err) => {
+            this.setState({ didMount: true })
             console.log(err);
         });
     }
@@ -40,22 +48,20 @@ class CourseDetail extends Component {
               estimatedTime,
               materialsNeeded,
               fullName,
+              authUserId,
               userId,
-              errors,
+              didMount,
             } = this.state;
+       
+        const id = this.props.match.params.id;   
 
-        let authUserId;
-        if(this.props.authenticatedUser){
-            authUserId = this.props.context.authenticatedUser[ "User ID" ];
-        }
-        const id = this.props.match.params.id;    
-
-
+    // if mount function is complete either failed or success, page will return    
+    if(didMount === true){
     return (
         <main>
             <div className="actions--bar">
                 
-                {authUserId === null || authUserId !== userId ?
+                {authUserId !== userId ?
                     <div className="wrap">
                         <a className="button button-secondary" href="/">Return to List</a>
                     </div>
@@ -90,14 +96,16 @@ class CourseDetail extends Component {
                     </div>
                 </form>
             </div>
-            : <Redirect to={{
+            : // <p>Hello</p>
+             <Redirect to={{
                   pathname: '/notfound',
-                }} />
+                }} /> 
             }
         </main>
-    );
+    );}
 }
 
+// handles delete
     handleDelete= (event) => {
         const { password } = this.props.context;
         const username = this.props.context.authenticatedUser.Username;

@@ -7,6 +7,7 @@ class Courses extends Component {
     courses: '',
   }
 
+  //updates courses state so api reruns on page reload
   componentDidUpdate(prevProps, prevState) {
     if (this.state.courses.length !== prevState.courses.length) {
       this.props.context.data.getCourses()
@@ -18,6 +19,7 @@ class Courses extends Component {
     }
   }
 
+  //runs api on mount
   componentDidMount() {
     this.props.context.data.getCourses()
     .then((data) => this.setState({ courses: data }))
@@ -70,7 +72,7 @@ class Courses extends Component {
       ) : (
         <div className="wrap main--grid">
           {courseList}
-          <a className="course--module course--add--module" href="/createcourse">
+          <a className="course--module course--add--module" href="/create">
             <span className="course--add--title">
               <svg
                 version="1.1"

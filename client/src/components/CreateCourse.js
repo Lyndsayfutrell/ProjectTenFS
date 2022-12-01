@@ -83,6 +83,7 @@ class CreateCourse extends Component {
     );
 }
 
+//handles changes and updates value
 change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -94,6 +95,7 @@ change = (event) => {
     });
   }
 
+  //handles submit
 submit = () => {
     const { context } = this.props;
     const { password } = context;
@@ -123,6 +125,7 @@ submit = () => {
         })
   }
 
+  //handles cancel
     cancel = () => {
         this.props.history.push('/');
       }

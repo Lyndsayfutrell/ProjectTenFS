@@ -12,6 +12,7 @@ class CreateCourse extends Component {
         errors: [],
       }
 
+      //run api and set state
       componentDidMount() {
         const id = this.props.match.params.id;
         this.props.context.data.getCourseById(id)
@@ -40,7 +41,8 @@ class CreateCourse extends Component {
     
     return (
         <main>
-        { this.props.context.authenticatedUser[ "User ID" ] !== authorId
+        { //checks if author is logged in user, if not reroutes to forbidden
+          this.props.context.authenticatedUser[ "User ID" ] !== authorId
             ? <Redirect to={{
                   pathname: '/forbidden',
                 }} />
@@ -104,6 +106,8 @@ class CreateCourse extends Component {
     );
 }
 
+
+//updates values on change
 change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -115,6 +119,7 @@ change = (event) => {
     });
   }
 
+  //handles submit and runs update course function
 submit = () => {
     const id = this.props.match.params.id;
     const { context } = this.props;
@@ -145,6 +150,7 @@ submit = () => {
         })
   }
 
+  //handles cancel function
     cancel = () => {
         const id = this.props.match.params.id;
         this.props.history.push(`/courses/${id}`);

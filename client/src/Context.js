@@ -44,9 +44,12 @@ export class Provider extends Component {
     );
   }
 
+  // Function to handle sign in
   
   signIn = async (username, password)  => {
-    const user = await this.data.getUser(username, password);
+    let user = null;
+    if (username.length > 0 && password.length > 0) {
+    user = await this.data.getUser(username, password);
     if (user !== null) {
       this.setState(() => {
         return {
@@ -58,8 +61,12 @@ export class Provider extends Component {
       Cookies.set('password', JSON.stringify(password), { expires: 1 });
     }
     return user;
-
+  } else {
+    return user;
   }
+  }
+
+//Function to hanlde sign out
 
   signOut = () => {
     this.setState(() => {

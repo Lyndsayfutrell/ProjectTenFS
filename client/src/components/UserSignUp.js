@@ -72,6 +72,7 @@ class UserSignUp extends Component {
       );
     }
   
+    //handles change and updates value
     change = (event) => {
       const name = event.target.name;
       const value = event.target.value;
@@ -83,6 +84,7 @@ class UserSignUp extends Component {
       });
     }
   
+    //handles submit 
     submit = () => {
       const { context } = this.props;
   
@@ -116,6 +118,7 @@ class UserSignUp extends Component {
     });
   }
   
+  //handles cancel
     cancel = () => {
       this.props.history.push('/');
     }

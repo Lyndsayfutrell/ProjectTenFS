@@ -38,7 +38,7 @@ export default class App extends Component {
           <Route path="/signin" component={UserSignInWithContext} />
           <Route path="/signup" component={UserSignUpWithContext} />
           <PrivateRouteWithContext path="/signout" component={UserSignOutWithContext} />
-          <PrivateRouteWithContext path="/createcourse" component={CreateCourseWithContext} />
+          <PrivateRouteWithContext path="/create" component={CreateCourseWithContext} />
           <Route exact path='/courses/:id' component={CourseDetailWithContext} />
           <PrivateRouteWithContext path="/courses/:id/update" component={UpdateCourseWithContext} />
           <Route path="/error" component={UnhandledError} />
